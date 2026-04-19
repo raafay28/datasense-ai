@@ -13,7 +13,7 @@ import { useTheme } from "../context/ThemeContext";
 import {
   LayoutDashboard, TrendingUp, TrendingDown, Minus, Brain,
   Bot, MessageSquare, Database, Upload, FileText, FolderOpen,
-  Sun, Moon, BarChart2, ClipboardList, Sparkles, LogOut, Send
+  Sun, Moon, BarChart2, ClipboardList, Sparkles, LogOut, Send, Menu, X
 } from "lucide-react";
 
 ChartJS.register(
@@ -64,6 +64,7 @@ export default function Dashboard() {
   const [chatLoading, setChatLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const chatEndRef = useRef(null);
   const fileRef = useRef(null);
   const dashboardRef = useRef(null);
@@ -247,8 +248,10 @@ export default function Dashboard() {
   // ──────────────────────────────────
   return (
     <div className="dashboard-layout">
+      {/* MOBILE OVERLAY */}
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
       {/* SIDEBAR */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo"><BarChart2 size={22} /></div>
           <div className="sidebar-title">DataSense AI</div>
@@ -256,7 +259,7 @@ export default function Dashboard() {
         <nav className="sidebar-nav">
           <div className="nav-section-label">Main Menu</div>
           {SECTIONS.map(s => (
-            <button key={s.id} className={`nav-item ${section === s.id ? "active" : ""}`} onClick={() => setSection(s.id)}>
+            <button key={s.id} className={`nav-item ${section === s.id ? "active" : ""}`} onClick={() => { setSection(s.id); setSidebarOpen(false); }}>
               <span className="nav-icon"><s.Icon size={16} /></span> {s.label}
             </button>
           ))}
@@ -285,6 +288,9 @@ export default function Dashboard() {
       <main className="main-content" ref={dashboardRef}>
         {/* TOPBAR */}
         <div className="topbar">
+          <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
           <div className="topbar-title">
             <h2 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               {(() => { const S = SECTIONS.find(s => s.id === section); return S ? <S.Icon size={20} /> : null; })()}
