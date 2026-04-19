@@ -1,0 +1,10 @@
+flask
+flask-cors
+flask-mysqldb
+pandas
+numpy
+scikit-learn
+google-generativeai
+python-dotenv
+reportlab
+scipy

@@ -1,0 +1,32 @@
+# === Node ===
+node_modules/
+npm-debug.log*
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.env
+
+# === SQLite database (auto-generated) ===
+*.db
+
+# === Uploaded user data ===
+backend/uploads/
+
+# === React build output ===
+frontend/build/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE files ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
