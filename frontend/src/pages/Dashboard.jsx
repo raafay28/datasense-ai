@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import axios from "axios";
+import api from "../api";
 import toast from "react-hot-toast";
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement,
@@ -72,9 +72,9 @@ export default function Dashboard() {
     setLoading(true);
     try {
       const [infoRes, kpiRes, chartRes] = await Promise.all([
-        axios.get("/api/data"),
-        axios.get("/api/kpi"),
-        axios.get("/api/charts"),
+        api.get("/api/data"),
+        api.get("/api/kpi"),
+        api.get("/api/charts"),
       ]);
       setDataInfo(infoRes.data);
       setNumericCols(infoRes.data.numeric_columns || []);
@@ -101,7 +101,7 @@ export default function Dashboard() {
     formData.append("file", file);
     setUploading(true);
     try {
-      const res = await axios.post("/api/upload", formData);
+      const res = await api.post("/api/upload", formData);
       toast.success(`✅ ${res.data.rows} rows loaded!`);
       await loadData();
       setSection("overview");
@@ -116,7 +116,7 @@ export default function Dashboard() {
   const loadInsights = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/insights");
+      const res = await api.get("/api/insights");
       setInsights(res.data.insights || []);
     } catch { toast.error("Failed to load insights"); }
     finally { setLoading(false); }
@@ -125,7 +125,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (section === "insights" && dataInfo) loadInsights();
     if (section === "data" && !rawData && dataInfo) {
-      axios.get("/api/export-data").then(r => setRawData(r.data)).catch(() => { });
+      api.get("/api/export-data").then(r => setRawData(r.data)).catch(() => { });
     }
   }, [section, dataInfo]);
 
@@ -133,7 +133,7 @@ export default function Dashboard() {
     if (!predictCol) return toast.error("Select a column");
     setLoading(true);
     try {
-      const res = await axios.post("/api/predict", { column: predictCol, steps: predictSteps });
+      const res = await api.post("/api/predict", { column: predictCol, steps: predictSteps });
       setPrediction(res.data);
     } catch (err) {
       toast.error(err.response?.data?.error || "Prediction failed");
@@ -148,7 +148,7 @@ export default function Dashboard() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const res = await axios.post("/api/chat", { query: q });
+      const res = await api.post("/api/chat", { query: q });
       setChatMessages(m => [...m, { role: "bot", text: res.data.answer, time: new Date().toLocaleTimeString() }]);
     } catch {
       setChatMessages(m => [...m, { role: "bot", text: "Sorry, something went wrong.", time: new Date().toLocaleTimeString() }]);

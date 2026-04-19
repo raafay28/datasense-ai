@@ -16,7 +16,13 @@ BUILD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fron
 
 app = Flask(__name__, static_folder=BUILD_DIR, static_url_path="")
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-fallback-change-in-production")
-CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+
+# Production cookie settings for cross-domain sessions
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+app.config["SESSION_COOKIE_SECURE"] = True
+
+CORS(app, supports_credentials=True, origins=[FRONTEND_URL, "http://localhost:3000"])
 
 DB_PATH = "database.db"
 UPLOAD_FOLDER = "uploads"

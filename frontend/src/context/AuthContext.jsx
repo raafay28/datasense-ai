@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
+import api from "../api";
 
 const AuthContext = createContext(null);
 
@@ -10,26 +8,26 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("/api/me")
+    api.get("/api/me")
       .then(res => setUser(res.data.user))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post("/api/login", { email, password });
+    const res = await api.post("/api/login", { email, password });
     setUser(res.data.user);
     return res.data;
   };
 
   const register = async (name, email, password) => {
-    const res = await axios.post("/api/register", { name, email, password });
+    const res = await api.post("/api/register", { name, email, password });
     setUser(res.data.user);
     return res.data;
   };
 
   const logout = async () => {
-    await axios.post("/api/logout");
+    await api.post("/api/logout");
     setUser(null);
   };
 
