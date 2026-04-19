@@ -39,11 +39,11 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Full Name</label>
-            <input className="form-input" type="text" name="name" placeholder="John Doe" value={form.name} onChange={handleChange} autoFocus />
+            <input className="form-input" type="text" name="name" placeholder="Enter your full name" value={form.name} onChange={handleChange} autoFocus />
           </div>
           <div className="form-group">
             <label>Email</label>
-            <input className="form-input" type="email" name="email" placeholder="you@example.com" value={form.email} onChange={handleChange} />
+            <input className="form-input" type="email" name="email" placeholder="Enter your email" value={form.email} onChange={handleChange} />
           </div>
           <div className="form-group">
             <label>Password</label>
@@ -61,6 +61,7 @@ export default function Register() {
         <p className="auth-link">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
+        <p className="auth-footer">Made by Raafay</p>
       </div>
     </div>
   );

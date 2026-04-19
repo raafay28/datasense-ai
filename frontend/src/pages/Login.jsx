@@ -37,11 +37,11 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input className="form-input" type="email" name="email" placeholder="you@example.com" value={form.email} onChange={handleChange} autoFocus />
+            <input className="form-input" type="email" name="email" placeholder="Enter your email" value={form.email} onChange={handleChange} autoFocus />
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input className="form-input" type="password" name="password" placeholder="••••••••" value={form.password} onChange={handleChange} />
+            <input className="form-input" type="password" name="password" placeholder="Enter your password" value={form.password} onChange={handleChange} />
           </div>
           <button className="btn-primary" disabled={loading} style={{ marginTop: "0.5rem" }}>
             {loading ? "Signing in…" : "Sign In →"}
@@ -51,6 +51,7 @@ export default function Login() {
         <p className="auth-link">
           Don't have an account? <Link to="/register">Create one free</Link>
         </p>
+        <p className="auth-footer">Made by Raafay</p>
       </div>
     </div>
   );

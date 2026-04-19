@@ -277,6 +277,7 @@ export default function Dashboard() {
             </div>
             <button className="icon-btn" onClick={logout} title="Logout" style={{ width: 28, height: 28, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><LogOut size={14} /></button>
           </div>
+          <p style={{ textAlign: "center", fontSize: "0.7rem", color: "var(--text3)", marginTop: "0.6rem", opacity: 0.7 }}>Made by Raafay</p>
         </div>
       </aside>
 
