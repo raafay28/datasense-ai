@@ -1,6 +1,6 @@
 flask
 flask-cors
-flask-mysqldb
+pymysql
 pandas
 numpy
 scikit-learn
@@ -8,3 +8,4 @@ google-generativeai
 python-dotenv
 reportlab
 scipy
+gunicorn
