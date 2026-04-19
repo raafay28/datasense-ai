@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, send_from_directory
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -8,8 +8,13 @@ import os
 import hashlib
 import sqlite3
 from datetime import datetime
+import pymysql
+pymysql.install_as_MySQLdb()
 
-app = Flask(__name__)
+# In production, serve React build from ../frontend/build
+BUILD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "build")
+
+app = Flask(__name__, static_folder=BUILD_DIR, static_url_path="")
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-fallback-change-in-production")
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
@@ -516,6 +521,19 @@ def export_data():
         "data": df.head(50).replace({np.nan: None}).to_dict(orient="records"),
         "columns": list(df.columns)
     })
+
+
+# ──────────────────────────────────────────
+# SERVE REACT FRONTEND
+# ──────────────────────────────────────────
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_react(path):
+    """Serve React app for any non-API route."""
+    if path and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, "index.html")
 
 
 if __name__ == "__main__":
